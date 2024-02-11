@@ -30,13 +30,13 @@ int main(){
             if(primeiraLista[i]==segundaLista[d]){
                 if(!semelhancaEntreArray(primeiraLista[i], listaMesclada, tamanhoLista)){
                     tamanhoLista++;
-                    listaMesclada=(int *)realloc(listaMesclada, sizeof(int) * tamanhoLista);
+                    listaMesclada=(int *)realloc(listaMesclada, tamanhoLista * sizeof(int));
+                    //In this way malloc lost the old thing in this array, but relloc only add in the end of array a new element
                     listaMesclada[tamanhoLista-1]=primeiraLista[i];
                 }
             }
         }
     }
-
     if(tamanhoLista==0) printf("VAZIO");
     else{
         ordenaArray(listaMesclada, tamanhoLista);

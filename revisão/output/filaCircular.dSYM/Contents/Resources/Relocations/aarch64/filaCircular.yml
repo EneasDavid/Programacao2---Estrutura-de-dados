@@ -1,0 +1,12 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     "/Users/davideneas/Library/CloudStorage/OneDrive-InstitutodeComputação-UniversidadeFederaldeAlagoas/2.Segundo Periodo/ED/Programacao2/revisão/output/filaCircular"
+relocations:
+  - { offsetInCU: 0x26, offset: 0x26, size: 0x8, addend: 0x0, symName: _enqueue, symObjAddr: 0x0, symBinAddr: 0x100003CB8, symSize: 0x7C }
+  - { offsetInCU: 0x41, offset: 0x41, size: 0x8, addend: 0x0, symName: _enqueue, symObjAddr: 0x0, symBinAddr: 0x100003CB8, symSize: 0x7C }
+  - { offsetInCU: 0x73, offset: 0x73, size: 0x8, addend: 0x0, symName: _is_empty, symObjAddr: 0x7C, symBinAddr: 0x100003D34, symSize: 0x24 }
+  - { offsetInCU: 0x9B, offset: 0x9B, size: 0x8, addend: 0x0, symName: _dequeue, symObjAddr: 0xA0, symBinAddr: 0x100003D58, symSize: 0x90 }
+  - { offsetInCU: 0xDF, offset: 0xDF, size: 0x8, addend: 0x0, symName: _imprimir, symObjAddr: 0x130, symBinAddr: 0x100003DE8, symSize: 0xB0 }
+  - { offsetInCU: 0x12D, offset: 0x12D, size: 0x8, addend: 0x0, symName: _criarFila, symObjAddr: 0x1E0, symBinAddr: 0x100003E98, symSize: 0x44 }
+  - { offsetInCU: 0x155, offset: 0x155, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x224, symBinAddr: 0x100003EDC, symSize: 0x94 }
+...
