@@ -1,49 +1,103 @@
 #include <stdio.h>
 #include <stdlib.h>
-// Fila é do tipo First-In-First-Out (FIFO)
-typedef struct _fila{
+
+typedef struct _node {
     int valor;
-    struct _fila *fila;
-}Fila;
+    struct _node *proximo;
+} Node;
 
-void enqueue(Fila **fila, int entrada){
-    Fila *aux, *proximaPosicao=malloc(sizeof(Fila));
-    proximaPosicao->valor=entrada;
-    proximaPosicao->fila=NULL;
-    //Indicando o proximo valor da lista
-    aux= *fila;
-    if(*fila){
-        while(aux->fila!=NULL){
-            aux=aux->fila;
+void enqueue_at_start(Node **listaEncadeada, int value) {
+    Node *novaLista = malloc(sizeof(Node));
+    novaLista->valor = value;
+    novaLista->proximo = *listaEncadeada;
+    *listaEncadeada = novaLista;
+}
+
+void enqueue_at_end(Node **listaEncadeada, int value) {
+    Node *novaLista = malloc(sizeof(Node));
+    novaLista->valor = value;
+    novaLista->proximo = NULL;
+    if (*listaEncadeada == NULL) {
+        *listaEncadeada = novaLista;
+    } else {
+        Node *temp = *listaEncadeada;
+        while (temp->proximo != NULL) {
+            temp = temp->proximo;
         }
-        aux->fila=proximaPosicao;
+        temp->proximo = novaLista;
+    }
+}
+
+void enqueue_at_middle(Node **listaEncadeada, int valor, int valorAnterior) {
+    Node *novaLista = malloc(sizeof(Node));
+    novaLista->valor = valor;
+
+    if (*listaEncadeada == NULL) {
+        novaLista->proximo = NULL;
+        *listaEncadeada = novaLista;
+    } else {
+        Node *temp = *listaEncadeada;
+        while (temp->proximo != NULL && temp->valor != valorAnterior) {
+            temp = temp->proximo;
+        }
+        novaLista->proximo = temp->proximo;
+        temp->proximo = novaLista;
+    }
+}
+
+void dequeue(Node *listaEncadeada) {
+    if (listaEncadeada) {
+        Node *temp = listaEncadeada->proximo;
+        listaEncadeada->proximo = temp->proximo;
+        free(temp);
+    }
+}
+
+void dequeue_in_search(Node *no, int valorBusca){
+    Node *atual=no;
+    Node *anterior=NULL;
+    while(atual && atual->valor!=valorBusca){
+        anterior=atual;
+        atual=atual->proximo;
+    }
+    if(!atual){
+        return no;
+    }
+    if(!anterior){
+        no=atual->proximo;
     }else{
-        *fila=proximaPosicao;
+        anterior->proximo=atual->proximo;
     }
+    free(atual);
 }
 
-void dequeue(Fila **fila){
-    Fila *remover = NULL;
-    remover=*fila;
-    *fila=remover->fila;
-    free(remover);
+void imprimir(Node *listaEncadeada) {
+    if(listaEncadeada){
+        printf("%d ", listaEncadeada->valor);
+        imprimir(listaEncadeada->proximo);
+    }
+    printf("\n");
 }
 
-void imprimir(Fila *comeco){
-     while (comeco) {
-        printf("%d\n", comeco->valor);
-        comeco = comeco->fila;
-    }
-}
+int main() {
+    Node *listaEncadeada = NULL;
 
-int main(){
-    Fila *comeco = NULL;
-    for(int i=1;i<6;i++){
-        enqueue(&comeco, i);
+    for (int i = 1; i < 6; i++) {
+        enqueue_at_end(&listaEncadeada, i);
     }
-    imprimir(comeco);
-    printf("Usando o dequeue\n");
-    dequeue(&comeco);
-    imprimir(comeco);
+
+    imprimir(listaEncadeada);
+
+    enqueue_at_start(&listaEncadeada, 7);
+    imprimir(listaEncadeada);
+
+    enqueue_at_middle(&listaEncadeada, 9, 3);
+    imprimir(listaEncadeada);
+
+    dequeue(listaEncadeada);
+    imprimir(listaEncadeada);
+
+    free(listaEncadeada);
+
     return 0;
 }
