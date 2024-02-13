@@ -1,43 +1,74 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct letra{
+typedef struct letra
+{
     char letra;
     int frequencia;
     struct letra *proximo;
-}Letra;
-//Usando enqueue_at_middle da revisão
-void enqueue(Letra **letra, char valor){
-    Letra *novoCaracter=malloc(sizeof(Letra));
-    novoCaracter->letra=valor;
-    novoCaracter->frequencia=1;
-    novoCaracter->proximo=NULL;
-    if(*letra==NULL){
-        *letra=novoCaracter;
+} Letra;
+
+void enqueue(Letra **lista, char valor){
+    Letra *novoCaracter = malloc(sizeof(Letra));
+    novoCaracter->letra = valor;
+    novoCaracter->frequencia = 1;
+    novoCaracter->proximo = NULL;
+
+    // Caso a lista esteja vazia ou o novo caractere é maior que o primeiro caractere na lista
+    if (*lista == NULL || valor > (*lista)->letra){
+        novoCaracter->proximo = *lista;
+        *lista = novoCaracter;
+        return;
+    }
+
+    Letra *temporario = *lista;
+    if (temporario->letra == valor){
+        temporario->frequencia += 1;
+        free(novoCaracter); 
     }else{
-        Letra *temporario=*letra;
-        while (temporario->proximo != NULL && temporario->letra != valor) {
+        // Procura o local adequado na lista para o novo caractere
+        while (temporario->proximo != NULL && valor < temporario->proximo->letra){
             temporario = temporario->proximo;
         }
-        if(temporario->letra==valor){
-            temporario->frequencia+=1;
+
+        // Se o caractere já existe, incrementa a frequência
+        if (temporario->proximo != NULL && temporario->proximo->letra == valor){
+            temporario->proximo->frequencia += 1;
+            free(novoCaracter);
         }else{
-            temporario->proximo=novoCaracter;
+            // Insere o novo nó de forma ordenada
+            novoCaracter->proximo = temporario->proximo;
+            temporario->proximo = novoCaracter;
         }
     }
 }
-void imprimir(Letra *letra){
-    if(letra==NULL) return ;
-    printf("%c %d\n", letra->letra, letra->frequencia);
-    imprimir(letra->proximo);
-}
-int main(){
-    Letra *letra=NULL;
-    char entrada;
-    while ((entrada = getchar()) != '\n') {
-        enqueue(&letra, entrada);
+
+void imprimir(const Letra *lista){
+    while (lista != NULL){
+        printf("%c %d\n", lista->letra, lista->frequencia);
+        lista = lista->proximo;
     }
-    imprimir(letra);
-    free(letra);
+}
+
+// Função para liberar a memória da lista encadeada
+void liberarMemoria(Letra *lista){
+    while (lista != NULL){
+        Letra *proximo = lista->proximo;
+        free(lista);
+        lista = proximo;
+    }
+}
+
+int main(){
+    Letra *lista = NULL;
+    char entrada;
+    while ((entrada = getchar()) != EOF){
+        enqueue(&lista, entrada);
+    }
+    imprimir(lista);
+
+    // Libera a memória alocada para a lista encadeada
+    liberarMemoria(lista);
+
     return 0;
 }

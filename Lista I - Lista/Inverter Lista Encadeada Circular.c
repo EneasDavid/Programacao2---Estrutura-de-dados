@@ -20,18 +20,20 @@ typedef struct estrutura
 typedef struct
 {
     NO* cabeca;
+    int tamanho;
 } LISTA;
-
 
 
 // Inicializa a lista deixando-a pronta para ser utilizada.
 void inicializar(LISTA *l)
 {
-    l->cabeca = NULL;
+    l->cabeca = (NO*) malloc(sizeof(NO));
+    l->cabeca->prox = l->cabeca;  // faz a referencia circular
+    l->tamanho = 0;
 }
 
 
-// Cria um novo no com o item passado e tendo NULL como prox
+// Cria um novo no com o item e o apontador para o proximo passados.
 NO* criarNo(ITEM item, NO *prox)
 {
     NO* pNovo = (NO*) malloc(sizeof(NO));
@@ -44,49 +46,42 @@ NO* criarNo(ITEM item, NO *prox)
 // Retornar o tamanho da lista
 int tamanho(LISTA *l)
 {
-    NO* p = l->cabeca;
-    int tam = 0;
-    while (p)  // p != NULL
-    {
-        tam++;
-        p = p->prox;
-    }
-    return tam;
+    return l->tamanho;
 }
 
 
-// Retorna true se a lista esta vazia (Cabeca = NULL)
+// Retorna true se a lista esta vazia, ou seja, se tem tamanho = 0
 bool vazia(LISTA *l)
 {
-    return l->cabeca == NULL;
+    return tamanho(l) == 0;
 }
 
 
-// Exibicao da lista sequencial
+/* 
+  Objetivo: Insere o item passado como parametro na lista passada.
+            A insercao ocorre no inicio da lista, ou seja, na cabeca.
+            Nao veririca se o item existe na lista, ou seja, permite
+            duplicacao.
+*/
+bool inserir(ITEM item, LISTA *l){
+    l->cabeca->prox = criarNo(item, l->cabeca->prox);
+    l->tamanho++;
+    return true;
+}
+
+
+// Exibicao da lista
 void exibirLista(LISTA *l)
 {
-    NO* p = l->cabeca;
-    while (p)  // p != NULL
+    NO* p = l->cabeca->prox;
+    while (p != l->cabeca)
     {
         printf("(%d,%s)", p->item.chave, p->item.valor);
         p = p->prox;
     }
 }
 
-
-// Liberacao das variaveis dinamicas dos nos da lista, iniciando da cabeca
-void destruir(LISTA *l)
-{
-    NO* atual = l->cabeca;
-    while (atual) {
-        NO* prox = atual->prox; // guarda proxima posicao
-        free(atual);            // libera memoria apontada por atual
-        atual = prox;
-    }
-    l->cabeca = NULL; // ajusta inicio da lista (vazia)
-}
-
-
+// Imprime a lista partindo da cabeca para a cauda
 void imprimirLista(LISTA *l)
 {
     printf("Tamanho = %d\n", tamanho(l));
@@ -95,40 +90,36 @@ void imprimirLista(LISTA *l)
 }
 
 
+// Liberacao das variaveis dinamicas dos nos da lista, iniciando da cabeca
+void destruir(LISTA *l)
+{
+    NO* atual = l->cabeca->prox;
+    while (atual != l->cabeca) {  // enquando nao deu a volta completa
+        NO* prox = atual->prox; // guarda proxima posicao
+        free(atual);            // libera memoria apontada por atual
+        atual = prox;
+    }
+    free(l->cabeca);  // liberacao no No cabeca
+    l->cabeca = NULL; // ajusta inicio da lista (vazia)
+}
+
+
 /////////////////////////////////////////////////////
 
 /*
- Objetivo: Inserir em uma lista ordenada o item passado e garantir
-           que nao havera duplicacao.
+ Objetivo: Inverte a lista encadeada ajustando apenas os apontadores,
+           ou seja, evitando copiar os dados para uma nova lista.
 */
-bool inserirNaOrdem(ITEM item, LISTA *l)
+void inverter(LISTA *l)
 {
-    NO *current= criarNo(item,NULL);
-    current=l;
-    while(current!=NULL){
-        if(item==current->item) return l;
-        else current=current->next;
-    }
-    
-    node *new_node=createNode(item);
-    
-    if(l==NULL || (l->item)>item){
-        new_node->next= l;
-        l=new_node;
-        return new_node;
-    }
-    
-    current= l;
-    
-    while(current->next!=NULL && item > current->next->item){
-        current=current->next;
-    }
-    
-    new_node->next=current->next;
-    current->next=new_node;
-    return l; 
+
+  
+//Insira o código aqui
+
+  
 }
 
+/////////////////////////////////////////////////////
 
 void lerItens(LISTA *l)
 {
@@ -141,7 +132,7 @@ void lerItens(LISTA *l)
     {
         scanf("%d", &item.chave);
         scanf("%s", item.valor);
-        inserirNaOrdem(item, l);
+        inserir(item, l);
     }
 }
 
@@ -155,7 +146,7 @@ int main(){
   lerItens(&l);
   imprimirLista(&l);
     
-  lerItens(&l);
+  inverter(&l);
   imprimirLista(&l);
 
   destruir(&l);
