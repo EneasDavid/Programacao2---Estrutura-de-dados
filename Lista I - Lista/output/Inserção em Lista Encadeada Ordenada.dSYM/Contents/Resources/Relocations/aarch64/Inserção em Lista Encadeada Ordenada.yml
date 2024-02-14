@@ -1,0 +1,16 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     "/Users/davideneas/Library/CloudStorage/OneDrive-InstitutodeComputação-UniversidadeFederaldeAlagoas/2.Segundo Periodo/ED/Programacao2/Lista I - Lista/output/Inserção em Lista Encadeada Ordenada"
+relocations:
+  - { offsetInCU: 0x26, offset: 0x26, size: 0x8, addend: 0x0, symName: _inicializar, symObjAddr: 0x0, symBinAddr: 0x1000039D0, symSize: 0x18 }
+  - { offsetInCU: 0xBD, offset: 0xBD, size: 0x8, addend: 0x0, symName: _inicializar, symObjAddr: 0x0, symBinAddr: 0x1000039D0, symSize: 0x18 }
+  - { offsetInCU: 0xE1, offset: 0xE1, size: 0x8, addend: 0x0, symName: _criarNo, symObjAddr: 0x18, symBinAddr: 0x1000039E8, symSize: 0x50 }
+  - { offsetInCU: 0x126, offset: 0x126, size: 0x8, addend: 0x0, symName: _tamanho, symObjAddr: 0x68, symBinAddr: 0x100003A38, symSize: 0x58 }
+  - { offsetInCU: 0x16A, offset: 0x16A, size: 0x8, addend: 0x0, symName: _vazia, symObjAddr: 0xC0, symBinAddr: 0x100003A90, symSize: 0x24 }
+  - { offsetInCU: 0x192, offset: 0x192, size: 0x8, addend: 0x0, symName: _exibirLista, symObjAddr: 0xE4, symBinAddr: 0x100003AB4, symSize: 0x7C }
+  - { offsetInCU: 0x1C4, offset: 0x1C4, size: 0x8, addend: 0x0, symName: _destruir, symObjAddr: 0x160, symBinAddr: 0x100003B30, symSize: 0x68 }
+  - { offsetInCU: 0x212, offset: 0x212, size: 0x8, addend: 0x0, symName: _imprimirLista, symObjAddr: 0x1C8, symBinAddr: 0x100003B98, symSize: 0x50 }
+  - { offsetInCU: 0x236, offset: 0x236, size: 0x8, addend: 0x0, symName: _inserirNaOrdem, symObjAddr: 0x218, symBinAddr: 0x100003BE8, symSize: 0x1AC }
+  - { offsetInCU: 0x298, offset: 0x298, size: 0x8, addend: 0x0, symName: _lerItens, symObjAddr: 0x3C4, symBinAddr: 0x100003D94, symSize: 0x104 }
+  - { offsetInCU: 0x2F5, offset: 0x2F5, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x4C8, symBinAddr: 0x100003E98, symSize: 0x88 }
+...

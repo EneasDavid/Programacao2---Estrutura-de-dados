@@ -14,30 +14,34 @@ typedef struct
 typedef struct estrutura
 {
     ITEM item;
+    struct estrutura *ant;
     struct estrutura *prox;
 } NO;
 
 typedef struct
 {
     NO* cabeca;
+    NO* cauda;
     int tamanho;
 } LISTA;
+
 
 
 // Inicializa a lista deixando-a pronta para ser utilizada.
 void inicializar(LISTA *l)
 {
-    l->cabeca = (NO*) malloc(sizeof(NO));
-    l->cabeca->prox = l->cabeca;  // faz a referencia circular
+    l->cabeca = NULL;
+    l->cauda = NULL;
     l->tamanho = 0;
 }
 
 
-// Cria um novo no com o item e o apontador para o proximo passados.
-NO* criarNo(ITEM item, NO *prox)
+// Cria um novo no com o item, os apontadores para o anterior e para o proximo
+NO* criarNo(ITEM item,  NO *ant, NO *prox)
 {
     NO* pNovo = (NO*) malloc(sizeof(NO));
     pNovo->item = item;
+    pNovo->ant = ant;
     pNovo->prox = prox;
     return pNovo;
 }
@@ -64,43 +68,68 @@ bool vazia(LISTA *l)
             duplicacao.
 */
 bool inserir(ITEM item, LISTA *l){
-    l->cabeca->prox = criarNo(item, l->cabeca->prox);
+    NO* pNovo = criarNo(item, NULL, l->cabeca);
     l->tamanho++;
+
+    if (l->cabeca) // cabeca != NULL
+       l->cabeca->ant = pNovo;  // ajusta o apontador para o anterior na antiga cabeca
+    
+    l->cabeca = pNovo;
+    
+    if (l->cauda == NULL) // se nao tinha cauda, o novo no estara tambem na cauda 
+       l->cauda = pNovo;
+
     return true;
 }
 
 
 // Exibicao da lista
-void exibirLista(LISTA *l)
+void exibirListaCabecaCauda(LISTA *l)
 {
-    NO* p = l->cabeca->prox;
-    while (p != l->cabeca)
+    NO* p = l->cabeca;
+    while (p)
     {
         printf("(%d,%s)", p->item.chave, p->item.valor);
         p = p->prox;
     }
 }
 
-// Imprime a lista partindo da cabeca para a cauda
-void imprimirLista(LISTA *l)
+
+// Exibicao da lista comecando da cauda
+void exibirListaCaudaCabeca(LISTA *l)
+{
+    NO* p = l->cauda;
+    while (p)
+    {
+        printf("(%d,%s)", p->item.chave, p->item.valor);
+        p = p->ant;
+    }
+}
+
+
+void imprimirLista(LISTA *l, bool crescente)
 {
     printf("Tamanho = %d\n", tamanho(l));
-    exibirLista(l);
+    if (crescente)
+        exibirListaCabecaCauda(l);
+    else
+        exibirListaCaudaCabeca(l);
     printf("\n");
 }
+
 
 
 // Liberacao das variaveis dinamicas dos nos da lista, iniciando da cabeca
 void destruir(LISTA *l)
 {
-    NO* atual = l->cabeca->prox;
-    while (atual != l->cabeca) {  // enquando nao deu a volta completa
+    NO* atual = l->cabeca;
+    while (atual) {
         NO* prox = atual->prox; // guarda proxima posicao
         free(atual);            // libera memoria apontada por atual
         atual = prox;
     }
-    free(l->cabeca);  // liberacao no No cabeca
-    l->cabeca = NULL; // ajusta inicio da lista (vazia)
+    l->cabeca = NULL; // ajusta a cabeca da lista (vazia)
+    l->cauda = NULL; // ajusta a cauda da lista (vazia)
 }
 
 
@@ -112,24 +141,11 @@ void destruir(LISTA *l)
 */
 void inverter(LISTA *l)
 {
-    NO* anterior=l->cabeca;
-    NO* atual=l->cabeca->prox;
-    NO* proximo=NULL;
-    for (int i=0;i<l->tamanho;i++) {
-        //Proximo recece o que vem depois do atual
-        proximo = atual->prox;
-        //o proximo depois do atual recebe o anterior
-        atual->prox = anterior;
-        //o anterior recebe o atual
-        anterior = atual;
-        //o atual recebe o proximo
-        atual = proximo;
-    }
 
-    // Atualiza os apontadores da cabeça e do último nó
-    proximo=l->cabeca->prox;
-    l->cabeca->prox = anterior;
-    proximo->prox = l->cabeca;
+  
+//Insira o código aqui
+
+  
 }
 
 /////////////////////////////////////////////////////
@@ -150,6 +166,8 @@ void lerItens(LISTA *l)
 }
 
 
+//////////////////////////////////////////////////////////////
+
 int main(){
   LISTA l;
   ITEM item;
@@ -157,10 +175,11 @@ int main(){
   inicializar(&l);
 
   lerItens(&l);
-  imprimirLista(&l);
-    
+  imprimirLista(&l, true);   // cabeca => cauda
+  
   inverter(&l);
-  imprimirLista(&l);
+  imprimirLista(&l, true);  // cabeca => cauda
+  imprimirLista(&l, false); // cauda => cabeca
 
   destruir(&l);
   return 0;

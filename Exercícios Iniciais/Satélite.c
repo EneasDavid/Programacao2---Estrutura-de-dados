@@ -5,7 +5,7 @@ int acharMatriz(int tamanho, int linha, int coluna, int quadrante) {
         return 0;
     }
     if(linha<tamanho/2){
-        if(coluna>tamanho/2){
+        if(coluna>=tamanho/2){
             quadrante=1;
         }else{
             quadrante=2;

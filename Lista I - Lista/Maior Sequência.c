@@ -66,11 +66,8 @@ void encontrarMaiorSequenciaDeZeros(listaEncadeada *lE) {
         maiorInicio = inicioAtual;
         maiorFim = fimAtual;
     }
-    if (maiorInicio != -1) {
-        printf("%d %d\n", maiorInicio, maiorFim);
-    } else {
-        printf("%d %d\n", posicao, posicao);
-    }
+    if (maiorInicio != -1) printf("%d %d\n", maiorInicio, maiorFim);
+    else printf("%d %d\n", posicao, posicao);
 }
 
 int main() {
