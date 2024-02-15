@@ -31,7 +31,6 @@ int main(){
                 if(!semelhancaEntreArray(primeiraLista[i], listaMesclada, tamanhoLista)){
                     tamanhoLista++;
                     listaMesclada=(int *)realloc(listaMesclada, tamanhoLista * sizeof(int));
-                    //In this way malloc lost the old thing in this array, but relloc only add in the end of array a new element
                     listaMesclada[tamanhoLista-1]=primeiraLista[i];
                 }
             }

@@ -22,14 +22,14 @@ void enqueue(listaEncadeada **lE, int valor){
 }
 
 listaEncadeada *inverter(listaEncadeada *lE) {
-    listaEncadeada *anterior = NULL;
-    listaEncadeada *atual = lE;
-    listaEncadeada *proxima = NULL;
-    while (atual != NULL) {
-        proxima = atual->proximo;
-        atual->proximo = anterior;
-        anterior = atual;
-        atual = proxima;
+    listaEncadeada *anterior=NULL;
+    listaEncadeada *atual=lE;
+    listaEncadeada *proxima=NULL;
+    while (atual!=NULL){
+        proxima=atual->proximo;
+        atual->proximo=anterior;
+        anterior=atual;
+        atual=proxima;
     }
     return anterior;
 }
@@ -45,7 +45,7 @@ void imprimir(listaEncadeada *lE){
 int main(){
     int entrada;
     listaEncadeada *lista=NULL;
-    while (scanf("%d", &entrada) != EOF) {
+    while (scanf("%d", &entrada)!=EOF){
         enqueue(&lista,entrada);
     }
     lista=inverter(lista);
