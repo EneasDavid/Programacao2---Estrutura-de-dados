@@ -139,14 +139,22 @@ void destruir(LISTA *l)
  Objetivo: Inverte a lista encadeada ajustando apenas os apontadores,
            ou seja, evitando copiar os dados para uma nova lista.
 */
-void inverter(LISTA *l)
-{
-
-  
-//Insira o código aqui
-
-  
+void inverter(LISTA *l){
+    //cria um NO tempoario pra trocar os ponteiros sem perder os valores
+    NO *atual = l->cabeca, *temp;
+    //Percorre a lista até achar a calda
+    while(atual!=NULL){
+        temp=atual->prox; //guarda o proximo valor
+        atual->prox=atual->ant; //inverte os valores aqui
+        atual->ant=temp; //Atualiza o valor do NO anterior
+        atual=temp; //muda o valor para o proximo NO da lista
+    }
+    // Troca o valor da cabeça e a cauda
+    temp=l->cabeca;
+    l->cabeca=l->cauda;
+    l->cauda=temp;
 }
+
 
 /////////////////////////////////////////////////////
 

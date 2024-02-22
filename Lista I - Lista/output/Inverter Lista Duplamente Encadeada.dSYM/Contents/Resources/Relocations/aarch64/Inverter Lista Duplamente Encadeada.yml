@@ -1,0 +1,18 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     "/Users/davideneas/Library/CloudStorage/OneDrive-InstitutodeComputação-UniversidadeFederaldeAlagoas/2.Segundo Periodo/ED/Programacao2/Lista I - Lista/output/Inverter Lista Duplamente Encadeada"
+relocations:
+  - { offsetInCU: 0x26, offset: 0x26, size: 0x8, addend: 0x0, symName: _inicializar, symObjAddr: 0x0, symBinAddr: 0x1000038DC, symSize: 0x28 }
+  - { offsetInCU: 0xC9, offset: 0xC9, size: 0x8, addend: 0x0, symName: _inicializar, symObjAddr: 0x0, symBinAddr: 0x1000038DC, symSize: 0x28 }
+  - { offsetInCU: 0xED, offset: 0xED, size: 0x8, addend: 0x0, symName: _criarNo, symObjAddr: 0x28, symBinAddr: 0x100003904, symSize: 0x60 }
+  - { offsetInCU: 0x140, offset: 0x140, size: 0x8, addend: 0x0, symName: _tamanho, symObjAddr: 0x88, symBinAddr: 0x100003964, symSize: 0x18 }
+  - { offsetInCU: 0x168, offset: 0x168, size: 0x8, addend: 0x0, symName: _vazia, symObjAddr: 0xA0, symBinAddr: 0x10000397C, symSize: 0x30 }
+  - { offsetInCU: 0x190, offset: 0x190, size: 0x8, addend: 0x0, symName: _inserir, symObjAddr: 0xD0, symBinAddr: 0x1000039AC, symSize: 0x10C }
+  - { offsetInCU: 0x1D5, offset: 0x1D5, size: 0x8, addend: 0x0, symName: _exibirListaCabecaCauda, symObjAddr: 0x1DC, symBinAddr: 0x100003AB8, symSize: 0x7C }
+  - { offsetInCU: 0x207, offset: 0x207, size: 0x8, addend: 0x0, symName: _exibirListaCaudaCabeca, symObjAddr: 0x258, symBinAddr: 0x100003B34, symSize: 0x7C }
+  - { offsetInCU: 0x239, offset: 0x239, size: 0x8, addend: 0x0, symName: _imprimirLista, symObjAddr: 0x2D4, symBinAddr: 0x100003BB0, symSize: 0x78 }
+  - { offsetInCU: 0x26B, offset: 0x26B, size: 0x8, addend: 0x0, symName: _destruir, symObjAddr: 0x34C, symBinAddr: 0x100003C28, symSize: 0x70 }
+  - { offsetInCU: 0x2B9, offset: 0x2B9, size: 0x8, addend: 0x0, symName: _inverter, symObjAddr: 0x3BC, symBinAddr: 0x100003C98, symSize: 0xD0 }
+  - { offsetInCU: 0x315, offset: 0x315, size: 0x8, addend: 0x0, symName: _lerItens, symObjAddr: 0x48C, symBinAddr: 0x100003D68, symSize: 0x104 }
+  - { offsetInCU: 0x372, offset: 0x372, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x590, symBinAddr: 0x100003E6C, symSize: 0xB4 }
+...
