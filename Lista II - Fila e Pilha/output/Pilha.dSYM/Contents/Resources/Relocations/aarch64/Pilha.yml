@@ -1,0 +1,11 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     "/Users/davideneas/Library/CloudStorage/OneDrive-InstitutodeComputação-UniversidadeFederaldeAlagoas/2.Segundo Periodo/ED/Programacao2/Lista II - Fila e Pilha/output/Pilha"
+relocations:
+  - { offsetInCU: 0x26, offset: 0x26, size: 0x8, addend: 0x0, symName: _create, symObjAddr: 0x0, symBinAddr: 0x100003CBC, symSize: 0x1C }
+  - { offsetInCU: 0x4D, offset: 0x4D, size: 0x8, addend: 0x0, symName: _create, symObjAddr: 0x0, symBinAddr: 0x100003CBC, symSize: 0x1C }
+  - { offsetInCU: 0x71, offset: 0x71, size: 0x8, addend: 0x0, symName: _push, symObjAddr: 0x1C, symBinAddr: 0x100003CD8, symSize: 0x38 }
+  - { offsetInCU: 0xA3, offset: 0xA3, size: 0x8, addend: 0x0, symName: _pop, symObjAddr: 0x54, symBinAddr: 0x100003D10, symSize: 0x38 }
+  - { offsetInCU: 0xD9, offset: 0xD9, size: 0x8, addend: 0x0, symName: _imprimir, symObjAddr: 0x8C, symBinAddr: 0x100003D48, symSize: 0x98 }
+  - { offsetInCU: 0x10B, offset: 0x10B, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x124, symBinAddr: 0x100003DE0, symSize: 0x150 }
+...

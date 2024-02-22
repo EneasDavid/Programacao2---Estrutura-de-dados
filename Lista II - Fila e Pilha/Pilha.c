@@ -22,6 +22,7 @@ int pop(TPilha *pilha){
     pilha->topo--;
     return valorRemovido;
 }
+
 void imprimir(TPilha *pilha){
     int i=pilha->topo;
     while(i>0){

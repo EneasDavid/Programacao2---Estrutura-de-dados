@@ -1,0 +1,10 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     "/Users/davideneas/Library/CloudStorage/OneDrive-InstitutodeComputação-UniversidadeFederaldeAlagoas/2.Segundo Periodo/ED/Programacao2/Lista II - Fila e Pilha/output/Mozilla Spring Camp"
+relocations:
+  - { offsetInCU: 0x26, offset: 0x26, size: 0x8, addend: 0x0, symName: _create, symObjAddr: 0x0, symBinAddr: 0x100003D4C, symSize: 0x1C }
+  - { offsetInCU: 0x41, offset: 0x41, size: 0x8, addend: 0x0, symName: _create, symObjAddr: 0x0, symBinAddr: 0x100003D4C, symSize: 0x1C }
+  - { offsetInCU: 0x65, offset: 0x65, size: 0x8, addend: 0x0, symName: _push, symObjAddr: 0x1C, symBinAddr: 0x100003D68, symSize: 0x3C }
+  - { offsetInCU: 0x97, offset: 0x97, size: 0x8, addend: 0x0, symName: _pop, symObjAddr: 0x58, symBinAddr: 0x100003DA4, symSize: 0x20 }
+  - { offsetInCU: 0xBB, offset: 0xBB, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x78, symBinAddr: 0x100003DC4, symSize: 0x17C }
+...
