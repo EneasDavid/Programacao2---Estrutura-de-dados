@@ -54,11 +54,21 @@ ITEM top(TPilha *p) {
 int palindromo(char s[]) {
     TPilha p;
     create(&p);
-    for (int i = 0; i < strleng(s); i++){
+    //Verifica a posicao I é igual a uma quebra de linha
+    for (int i=0; s[i]!='\0'; i++){
+        //adiciona na lista
         push(&p, s[i]);
     }
-    
-    push(&p, s[0]);
+    //verifica se I é menor ou igual ao topo da pilha
+    for(int i=0;i<=p.topo;i++){
+        //caso o topo da pilha (se liga que a função POP já remove o elemento, isso garante a ciclicidade da pilha) seja diferente da posicao de I na char, ele retorna false
+        if(pop(&p)!=s[i]){
+            return 0;
+        }
+    }
+    //caso não, retorna true
+    return 1;
+
 }
 
 int main(void) {
