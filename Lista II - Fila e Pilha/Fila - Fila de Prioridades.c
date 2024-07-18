@@ -56,7 +56,9 @@ void createfp(TFilaPrio *fp) {
 }
 
 void destroyfp(TFilaPrio *fp) {
-	//Insira o código aqui
+	destroy(&(fp->f1));
+    destroy(&(fp->f2));
+    destroy(&(fp->f3));
 }
 
 int isemptyfp(TFilaPrio *fp, int prio) {
