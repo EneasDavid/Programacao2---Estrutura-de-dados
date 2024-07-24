@@ -1,24 +1,16 @@
 #include <stdio.h>
 
 int acharMatriz(int tamanho, int linha, int coluna, int quadrante) {
-    if(tamanho==1) {
-        return 0;
-    }
+    if(tamanho==1) return 0;
     if(linha<tamanho/2){
-        if(coluna>=tamanho/2){
-            quadrante=1;
-        }else{
-            quadrante=2;
-        }
+        if(coluna>=tamanho/2) quadrante=1;
+        else quadrante=2;
     }else if(coluna>tamanho/2){
         quadrante=4;
-    }else{
-        quadrante=4;
-    }
+    }else quadrante=4;
 
-    if(quadrante==1){
-        tamanho/=2;
-    }else if(quadrante==2){
+    if(quadrante==1) tamanho/=2;
+    else if(quadrante==2){
         tamanho/=2;
         coluna-=tamanho;
     }else if(quadrante==3){

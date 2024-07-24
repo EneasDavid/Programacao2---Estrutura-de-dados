@@ -2,11 +2,8 @@
 
 int encontro(int ondeT, int vezesR, int laco){
     if(laco<=vezesR){
-        if(laco%2>0){
-            return encontro(ondeT+3,vezesR,laco+1);
-        }else{
-            return encontro(ondeT+(ondeT%5),vezesR,laco+1);
-        }
+        if(laco&1) return encontro(ondeT+3,vezesR,laco+1);
+        return encontro(ondeT+(ondeT%5),vezesR,laco+1);
     }
     return ondeT;
 }

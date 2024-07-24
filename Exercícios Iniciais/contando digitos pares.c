@@ -4,7 +4,7 @@ int ContaDigitosPares(int entrada){
         return 0;
     }
     int ultimoDigito=entrada%10;
-    return ultimoDigito%2==0?1+ContaDigitosPares(entrada/10):ContaDigitosPares(entrada/10);
+    return ultimoDigito&1==0?1+ContaDigitosPares(entrada/10):ContaDigitosPares(entrada/10);
 }
 int main() {
     int digito;
