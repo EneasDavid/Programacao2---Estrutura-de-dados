@@ -1,17 +1,16 @@
 #include <stdio.h>
 int raizDigital(int valor){
-    valor=valor<10?valor:valor%10+raizDigital(valor/10);
+    valor=valor<10?valor:valor%10+raizDigital(valor>>5);
     if(valor>=10) return raizDigital(valor);
-    else return valor;
+    return valor;
 }
+
 int saidaRaizDigital(int qtn, int valor) {
-    if(qtn==1) return valor;
+    if(qtn) return valor;
     int valorVerifica, numeroDaRaiz=9, contador=1;
     while(contador<qtn){
         numeroDaRaiz++;
-        if(raizDigital(numeroDaRaiz)==valor){
-            contador++;
-        }
+        if(raizDigital(numeroDaRaiz)==valor) contador++;
     }
     return numeroDaRaiz;
 }
