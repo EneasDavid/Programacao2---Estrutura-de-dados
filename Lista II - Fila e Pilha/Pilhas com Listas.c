@@ -1,61 +1,108 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
-// Definindo a estrutura da pilha
-typedef struct {
-    int *array; // Array para armazenar os inteiros
-    int tamanho; // Tamanho atual da pilha
-    int capacidade; // Capacidade máxima da pilha
-} PilhaVariavel;
+#define MAX_SIZE 10000
 
-// Função para inicializar a pilha
-PilhaVariavel* inicializarPilha(int capacidade) {
-    PilhaVariavel* pilha = (PilhaVariavel*)malloc(sizeof(PilhaVariavel));
-    pilha->array = (int*)malloc(capacidade * sizeof(int));
-    pilha->tamanho = 0;
-    pilha->capacidade = capacidade;
-    return pilha;
+typedef struct{
+    int tamanho_atual;
+    int dados[MAX_SIZE];
+} Lista;
+
+typedef struct{
+    int tamanho_atual;
+    Lista *dados[MAX_SIZE];
+} PilhaListas;
+
+Lista *criar_lista(){
+    Lista *nova_lista = (Lista *)malloc(sizeof(Lista));
+    nova_lista->tamanho_atual = 0;
+    return nova_lista;
 }
 
-// Função para realizar a operação PUSH na pilha
-void push(PilhaVariavel* pilha, int* valores, int numValores) {
-    if (pilha->tamanho + numValores > pilha->capacidade) {
-        pilha->capacidade<<=1;
-        pilha->array = (int*)realloc(pilha->array, pilha->capacidade * sizeof(int));
-    }
-    for (int i = 0; i < numValores; i++) {
-        pilha->array[pilha->tamanho++] = valores[i];
-    }
+PilhaListas *criar_pilha_de_listas(){
+    PilhaListas *nova_pilha = (PilhaListas *)malloc(sizeof(PilhaListas));
+    nova_pilha->tamanho_atual = 0;
+    return nova_pilha;
 }
 
-// Função para realizar a operação POP na pilha
-void pop(PilhaVariavel* pilha) {
-    if(pilha->tamanho==0) printf("EMPTY STACK\n");
+void inserir_lista(Lista *lista, int dado){
+    if (lista->tamanho_atual == MAX_SIZE) printf("List overflow\n");
+    else lista->dados[lista->tamanho_atual++] = dado;
+}
+
+void inserir_pilha(PilhaListas *pilha, Lista *lista){
+    if (pilha->tamanho_atual == MAX_SIZE) printf("Stack overflow for pilha de listas\n");
+    else pilha->dados[pilha->tamanho_atual++] = lista;
+}
+
+int remover_lista(Lista *lista){
+    if (lista->tamanho_atual == 0){
+        printf("List underflow\n");
+        return -1;
+    }
     else{
-        for (int i = pilha->tamanho - 1; i >= 0; i--) {
-            printf("%d ", pilha->array[i]);
-        }
-        printf("\n");
-        pilha->tamanho = 0;
+        return lista->dados[--lista->tamanho_atual];
     }
 }
 
-// Função principal
-int main() {
-    char comando[4];
-    PilhaVariavel* pilha = inicializarPilha(10);
-    while (scanf("%s", comando) != EOF) {
-        if (strcmp(comando,"PUSH")==0){ // PUSH
-            int numValores;
-            scanf("%d", &numValores);
-            int* valores = (int*)malloc(numValores * sizeof(int));
-            for (int i = 0; i < numValores; i++) scanf("%d", &valores[i]);
-            push(pilha, valores, numValores);
-            free(valores);
-        } else if (strcmp(comando,"POP")==0) pop(pilha);
+Lista *remover_pilha(PilhaListas *pilha){
+    if (pilha->tamanho_atual == 0) return NULL;
+    else return pilha->dados[--pilha->tamanho_atual];
+}
+
+int topo_lista(Lista *lista){
+    if (lista->tamanho_atual == 0){
+        printf("List underflow\n");
+        return -1;
     }
-    free(pilha->array);
+    else{
+        return lista->dados[lista->tamanho_atual - 1];
+    }
+}
+
+void imprimir_lista(Lista *lista){
+    if (lista == NULL){
+        printf("EMPTY STACK\n");
+        return;
+    }
+    for (int i = 0; i < lista->tamanho_atual; i++){
+        printf("%d", lista->dados[i]);
+        if (i + 1 != lista->tamanho_atual){
+            printf(" ");
+        }
+    }
+    printf("\n");
+    return;
+}
+
+void entradas(PilhaListas *pilha){
+    Lista *nova_lista = criar_lista();
+    inserir_pilha(pilha, nova_lista);
+
+    int entrada;
+    while (scanf("%d", &entrada) == 1){
+        inserir_lista(nova_lista, entrada);
+    }
+}
+
+int main(){
+    PilhaListas *pilha = criar_pilha_de_listas();
+    char comando[7];
+    while (scanf("%s", comando) != EOF){
+        if (strcmp(comando, "PUSH") == 0){
+            entradas(pilha);
+        }
+        else if (strcmp(comando, "POP") == 0){
+            Lista *lista_para_imprimir = remover_pilha(pilha);
+            imprimir_lista(lista_para_imprimir);
+            free(lista_para_imprimir);
+        }
+    }
+    for (int i = 0; i < pilha->tamanho_atual; i++){
+        free(pilha->dados[i]);
+    }
     free(pilha);
     return 0;
 }
