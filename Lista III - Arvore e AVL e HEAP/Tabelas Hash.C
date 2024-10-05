@@ -65,16 +65,11 @@ void remover(TabelaHash* tabela, int valor) {
         atual = atual->prox;
     }
 
-    if (atual == NULL) {
-        return;
-    }
+    if (atual == NULL) return;
 
-    if (anterior == NULL) {
-        tabela->tabela[indice] = atual->prox;
-    } else {
-        anterior->prox = atual->prox;
-    }
-
+    if (anterior == NULL) tabela->tabela[indice] = atual->prox;
+    else anterior->prox = atual->prox;
+    
     free(atual);
 }
 
@@ -151,8 +146,6 @@ int main() {
                 procurar(tabela, valor);
                 break;
         }
-
     }
-    
     return 0;
 }

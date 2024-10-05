@@ -1,174 +1,158 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
 
-typedef struct Node {
-    int value;
-    struct Node* next;
-} Node;
+typedef struct no {
+    int valor;
+    struct no *proximo;
+} No;
 
-typedef struct HashTable {
-    Node** table;
-    int size;
-    int count; 
-} HashTable;
+typedef struct tabela_dispersao {
+    int tamanho;
+    int total_elementos;
+    int maior_lista;
+    No **listas;
+} TabelaDispersao;
 
-HashTable* createHashTable(int initialSize) {
-    HashTable* ht = (HashTable*)malloc(sizeof(HashTable));
-    ht->size = initialSize;
-    ht->count = 0;
-    ht->table = (Node**)malloc(initialSize * sizeof(Node*));
-    for (int i = 0; i < initialSize; i++) {
-        ht->table[i] = NULL;
+TabelaDispersao *criarTabelaDispersao(int tamanho) {
+    TabelaDispersao *novaTabela = (TabelaDispersao *)malloc(sizeof(TabelaDispersao));
+    novaTabela->tamanho = tamanho;
+    novaTabela->total_elementos = 0;
+    novaTabela->maior_lista = 0;
+    novaTabela->listas = (No **)malloc(tamanho * sizeof(No *));
+    for (int i = 0; i < tamanho; i++) {
+        novaTabela->listas[i] = NULL;
     }
-    return ht;
+    return novaTabela;
 }
 
-void freeList(Node* head) {
-    Node* current = head;
-    while (current != NULL) {
-        Node* temp = current;
-        current = current->next;
-        free(temp);
-    }
+int funcaoDispersao(int valor, int tamanho) {
+    return valor % tamanho;
 }
 
-void freeHashTable(HashTable* ht) {
-    for (int i = 0; i < ht->size; i++) {
-        freeList(ht->table[i]);
-    }
-    free(ht->table);
-    free(ht);
-}
-
-int hash(int k, int size) {
-    return k % size;
-}
-
-void rehash(HashTable* ht) {
-    int newSize = 2 * ht->size - 1;
-    Node** newTable = (Node**)malloc(newSize * sizeof(Node*));
-    for (int i = 0; i < newSize; i++) {
-        newTable[i] = NULL;
-    }
-
-    for (int i = 0; i < ht->size; i++) {
-        Node* current = ht->table[i];
-        while (current != NULL) {
-            Node* next = current->next;
-            int newIndex = hash(current->value, newSize);
-            current->next = newTable[newIndex];
-            newTable[newIndex] = current;
-            current = next;
+bool buscarElemento(TabelaDispersao *tabela, int valor, int *comparacoes) {
+    int indice = funcaoDispersao(valor, tabela->tamanho);
+    No *atual = tabela->listas[indice];
+    int contador = 0;
+    while (atual != NULL) {
+        contador++;
+        if (atual->valor == valor) {
+            *comparacoes = contador;
+            return true;
         }
+        atual = atual->proximo;
     }
-
-    free(ht->table);
-    ht->table = newTable;
-    ht->size = newSize;
+    *comparacoes = contador;
+    return false;
 }
 
-int add(HashTable* ht, int k, int* comparisons) {
-    int index = hash(k, ht->size);
-    Node* current = ht->table[index];
+int inserirElemento(TabelaDispersao *tabela, int valor, int *comparacoes) {
+    if (buscarElemento(tabela, valor, comparacoes)) {
+        return false;
+    }
 
-    while (current != NULL) {
-        if (current->value == k) {
-            (*comparisons)++;
-            return 0; 
+    int indice = funcaoDispersao(valor, tabela->tamanho);
+    No *novoNo = (No *)malloc(sizeof(No));
+    novoNo->valor = valor;
+    novoNo->proximo = tabela->listas[indice];
+    tabela->listas[indice] = novoNo;
+
+    tabela->total_elementos++;
+    if (tabela->total_elementos >= tabela->tamanho * 0.75) {
+        int tamanho_antigo = tabela->tamanho;
+        tabela->tamanho = 2 * tabela->tamanho - 1;
+        No **antigas_listas = tabela->listas;
+        tabela->listas = (No **)malloc(tabela->tamanho * sizeof(No *));
+        for (int i = 0; i < tabela->tamanho; i++) {
+            tabela->listas[i] = NULL;
         }
-        current = current->next;
-        (*comparisons)++;
-    }
 
-    Node* newNode = (Node*)malloc(sizeof(Node));
-    newNode->value = k;
-    newNode->next = ht->table[index];
-    ht->table[index] = newNode;
-    ht->count++;
-
-    if ((double)ht->count / ht->size >= 0.75) rehash(ht);
-
-    return 1; 
-}
-
-int delete(HashTable* ht, int k, int* comparisons) {
-    int index = hash(k, ht->size);
-    Node* current = ht->table[index];
-    Node* prev = NULL;
-
-    while (current != NULL) {
-        if (current->value == k) {
-            if (prev == NULL) {
-                ht->table[index] = current->next;
-            } else {
-                prev->next = current->next;
+        for (int i = 0; i < tamanho_antigo; i++) {
+            No *atual = antigas_listas[i];
+            while (atual != NULL) {
+                No *proximo = atual->proximo;
+                int novo_indice = funcaoDispersao(atual->valor, tabela->tamanho);
+                atual->proximo = tabela->listas[novo_indice];
+                tabela->listas[novo_indice] = atual;
+                atual = proximo;
             }
-            free(current);
-            ht->count--;
-            return 1;
         }
-        prev = current;
-        current = current->next;
-        (*comparisons)++;
-    }
 
-    return 0; 
+        free(antigas_listas);
+    }
+    return true;
 }
 
-int has(HashTable* ht, int k, int* comparisons) {
-    int index = hash(k, ht->size);
-    Node* current = ht->table[index];
-
-    while (current != NULL) {
-        if (current->value == k) return 1; 
-        current = current->next;
-        (*comparisons)++;
+bool removerElemento(TabelaDispersao *tabela, int valor, int *comparacoes) {
+    int indice = funcaoDispersao(valor, tabela->tamanho);
+    No *atual = tabela->listas[indice];
+    No *anterior = NULL;
+    int contador = 0;
+    while (atual != NULL) {
+        contador++;
+        if (atual->valor == valor) {
+            if (anterior == NULL) {
+                tabela->listas[indice] = atual->proximo;
+            } else {
+                anterior->proximo = atual->proximo;
+            }
+            free(atual);
+            tabela->total_elementos--;
+            *comparacoes = contador;
+            return true;
+        }
+        anterior = atual;
+        atual = atual->proximo;
     }
-    return 0; 
+    *comparacoes = contador;
+    return false;
 }
 
-void printTable(HashTable* ht, int operationIndex) {
-    int maxLength = 0;
-    for (int i = 0; i < ht->size; i++) {
-        int length = 0;
-        Node* current = ht->table[i];
-        while (current != NULL) {
-            length++;
-            current = current->next;
+int calcularMaiorLista(TabelaDispersao *tabela) {
+    int max = 0;
+    for (int i = 0; i < tabela->tamanho; i++) {
+        int contador = 0;
+        No *atual = tabela->listas[i];
+        while (atual != NULL) {
+            contador++;
+            atual = atual->proximo;
         }
-        if (length > maxLength) {
-            maxLength = length;
+        if (contador > max) {
+            max = contador;
         }
     }
-    printf("%d %d %d %d\n", operationIndex, ht->size, ht->count, maxLength);
+    return max;
 }
 
-int main() {
-    HashTable* ht = createHashTable(7);
-    char operation[4];
-    int k, operationIndex = 0;
+int main(void) {
+    TabelaDispersao *tabela = criarTabelaDispersao(7);
 
-    while (scanf("%s", operation) != EOF) {
-        if (operation[0] == 'A') { 
-            scanf("%d", &k);
-            int comparisons = 0;
-            int result = add(ht, k, &comparisons);
-            printf("%d %d %d\n", operationIndex++, result, comparisons);
-        } else if (operation[0] == 'D') { 
-            scanf("%d", &k);
-            int comparisons = 0;
-            int result = delete(ht, k, &comparisons);
-            printf("%d %d %d\n", operationIndex++, result, comparisons);
-        } else if (operation[0] == 'H') { 
-            scanf("%d", &k);
-            int comparisons = 0;
-            int result = has(ht, k, &comparisons);
-            printf("%d %d %d\n", operationIndex++, result, comparisons);
-        } else if (operation[0] == 'P') { 
-            printTable(ht, operationIndex++);
+    int i = 0, comparacoes = 0;
+    char comando[4];
+    while (scanf("%s", comando) == 1) {
+        int entradaValor;
+
+        if (strcmp(comando, "ADD") == 0) {
+            scanf("%d", &entradaValor);
+            int resultado = inserirElemento(tabela, entradaValor, &comparacoes);
+            printf("%d %d %d\n", i, resultado, comparacoes);
+            comparacoes = 0;
+        } else if (strcmp(comando, "DEL") == 0) {
+            scanf("%d", &entradaValor);
+            int resultado = removerElemento(tabela, entradaValor, &comparacoes);
+            printf("%d %d %d\n", i, resultado, comparacoes);
+            comparacoes = 0;
+        } else if (strcmp(comando, "HAS") == 0) {
+            scanf("%d", &entradaValor);
+            int resultado = buscarElemento(tabela, entradaValor, &comparacoes);
+            printf("%d %d %d\n", i, resultado, comparacoes);
+            comparacoes = 0;
+        } else if (strcmp(comando, "PRT") == 0) {
+            printf("%d %d %d %d\n", i, tabela->tamanho, tabela->total_elementos, calcularMaiorLista(tabela));
         }
+        i += 1;
     }
-
-    freeHashTable(ht);
+    free(tabela);
     return 0;
 }
