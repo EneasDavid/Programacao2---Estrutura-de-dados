@@ -1,0 +1,1 @@
+As estrutura precisão está em C, aqui eu fiz errado porque fiz em cima da hora
