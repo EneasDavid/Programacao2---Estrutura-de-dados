@@ -1,18 +1,17 @@
 ![Badge em desenvolvimento](https://img.shields.io/static/v1?label=STATUS&message=EM%20DESENVOLVIMENTO&color=YELLOW&style=for-the-badge)
 ![C](https://img.shields.io/badge/C-%2300599C.svg?style=for-the-badge&logo=c&logoColor=white)
 
-
 # Projeto de Estrutura de Dados II
-Huffman 
+## Huffman
+
 O projeto consiste em implementar o algoritmo de Huffman para compressão de arquivos. O algoritmo de Huffman é um método de compressão que usa as probabilidades de ocorrência dos símbolos no conjunto de dados a ser comprimido para determinar códigos de tamanho variável para cada símbolo. O algoritmo foi desenvolvido por David A. Huffman em 1952, enquanto era um estudante de graduação no MIT, e foi publicado em 1952.
 
-
-## Tabela de conteúdos
+## Tabela de Conteúdos
 
 - [Instalação](#instalação)
 - [Método de Uso](#método-de-uso)
-- [Integrantes](#Integrantes)
-- [Cabeçalho](#Cabeçalho)
+- [Integrantes](#integrantes)
+- [Cabeçalho](#cabeçalho)
 
 ## Instalação
 
@@ -21,49 +20,41 @@ git clone https://github.com/EneasDavid/Huffman/tree/main
 ```
 
 ## Método de Uso
-Para compilar o projeto, basta executar o comando `gcc -o huff src/utils.c src/algoritimo_compressao.c src/algoritimo_descompressao.c src/huffman.c src/main.c` no terminal. O comando irá gerar um executável chamado `huff`.
-
-
-Para executar o projeto, basta rodar o comando `./huff` no terminal. O programa irá solicitar o arquivo a ser comprimido.
-#### de forma resumida
+Para compilar o projeto, execute o comando abaixo no terminal. O comando gera um executável chamado `huff`:
 
 ```bash
 gcc -o huff src/utils.c src/algoritimo_compressao.c src/algoritimo_descompressao.c src/huffman.c src/main.c
 ```
+
+Para executar o projeto, basta rodar:
+
 ```bash
 ./huff
 ```
 
+O programa solicitará o arquivo a ser comprimido.
+
 ## Integrantes
-| Discente | Curso | 
-| -------- | -------- |
-| David Enéas | Ciência da Computação |  
+| Discente    | Curso                    |
+|-------------|--------------------------|
+| David Enéas | Ciência da Computação     |
 
 ## Cabeçalho
 
-A disposição do cabeçalho do arquivo comprimito é feito da seguinte forma:
-1 byte 
-[][][][][][][][]
+A estrutura do cabeçalho do arquivo comprimido é organizada da seguinte forma:
 
-Onde:
-[][][] -> Tamanho do lixo (resto de bits que faltou para completar o byte na arvore do huffman)
-[][][][][] -> Começo do tamanho do arquivo
-[][][][][][][][] -> resto do tamanho do arquivo 
+### Estrutura
 
-assim ficando os dois primeiros byte
-Primeiro byte
----------1 byte de 8 bits --------------
-3 bits iniciais (mais a esquerda) para o tamnho do lixo
-5 bits para o tamanho da arvore de huffman
+#### Primeiro Byte (1 byte - 8 bits)
+- **3 bits iniciais** (mais à esquerda): tamanho do lixo (bits que sobraram para completar o byte na árvore de Huffman)
+- **5 bits**: início do tamanho da árvore de Huffman
 
-Segundo byte
----------1 byte de 8 bits --------------
-8 bits para o tamanho da arvore de huffman
+#### Segundo Byte (1 byte - 8 bits)
+- **8 bits**: continuam representando o tamanho da árvore de Huffman
 
-N bytes
----------n byte de 8 bits --------------
-arvore de huffman
+#### Próximos Bytes (N bytes)
+- **N bytes**: representam a árvore de Huffman
 
-N bytes
----------n byte de 8 bits --------------
-Dados comprimidos
+#### Dados Comprimidos
+Após os dados da árvore e extensão, temos:
+- **N bytes**: representam os dados comprimidos
